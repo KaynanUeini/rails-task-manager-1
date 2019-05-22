@@ -8,9 +8,16 @@ class TasksController < ApplicationController
   end
 
   def new
+    @task = Task.new
   end
 
   def create
+    @task = Task.new(task_params)
+    if @task.save
+      redirect_to root_path
+    else
+      render 'new'
+    end
   end
 
   def edit
@@ -22,7 +29,12 @@ class TasksController < ApplicationController
   def destroy
   end
 
+  def task_params
+    params.require(:task).permit(:title, :details, :completed)
+  end
+
   def find_id
     @tasks = Task.find(params[:id])
   end
+
 end
